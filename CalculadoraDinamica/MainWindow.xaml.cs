@@ -13,39 +13,37 @@ namespace CalculadoraDinamica
         public MainWindow()
         {
             InitializeComponent();
-
-        
-            Grid rejilla = new Grid();
-            RowDefinition row1 = new RowDefinition();
-            RowDefinition row2 = new RowDefinition();
-            RowDefinition row3 = new RowDefinition();
-            ColumnDefinition col1 = new ColumnDefinition();
-            ColumnDefinition col2 = new ColumnDefinition();
-            ColumnDefinition col3 = new ColumnDefinition();
-            rejilla.RowDefinitions.Add(row1);
-            rejilla.RowDefinitions.Add(row2);
-            rejilla.RowDefinitions.Add(row3);
-            rejilla.ColumnDefinitions.Add(col1);
-            rejilla.ColumnDefinitions.Add(col2);
-            rejilla.ColumnDefinitions.Add(col3);
-
-            int valor = 0;
-            for (int i = 0; i < 3; i++)
+            // margenes para cada boton
+            int[,] margen = { {10,10,5,0},  //1
+                              {5,10,5,5 },  //2
+                              {5,10,10,5},  //3
+                              {10,5,5,5 },  //4
+                              {5,5,5,5 },   //5
+                              {5,5,10,5 },  //6
+                              {10,5,5,10 }, //7
+                              {5,5,5,10},   //8
+                              {5,5,10,10 }  //9
+            };
+            // Construimos los 9 botones (uno a uno y posicionandolo en el Grid)
+            int numeroBoton = 0;
+            for (int i = 1; i <= 3; i++)
             {
                 for (int j = 0; j < 3; j++)
                 {
-                    valor++;
-                    Button boton = FormaBoton(valor.ToString());
+                    numeroBoton++;
+                    Button boton = FormaBoton(numeroBoton.ToString(),margen[numeroBoton - 1, 0], 
+                                                                     margen[numeroBoton - 1, 1], 
+                                                                     margen[numeroBoton - 1, 2],
+                                                                     margen[numeroBoton - 1, 3]);
                     Grid.SetRow(boton, i);
                     Grid.SetColumn(boton, j);
                     rejilla.Children.Add(boton);
                 }
-            }
-            Content = rejilla;
-            
+            }          
 
         }
-        public static Button FormaBoton(String numero)
+        // Construccion del boton
+        public static Button FormaBoton(String numero,int margenLeft,int margenTop,int margenRight,int margenbottom)
         {
             Button boton = new Button();
             TextBlock texto = new TextBlock();
@@ -53,7 +51,8 @@ namespace CalculadoraDinamica
             texto.Text = numero;
             vb.Child = texto;
             boton.Tag = numero;
-            boton.Margin = new Thickness(10, 10, 5, 0);
+            boton.Margin = new Thickness(margenLeft, margenTop, margenRight, margenbottom);
+            boton.Content = vb;
             return boton;
         }
 
